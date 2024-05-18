@@ -4,9 +4,13 @@
     "port": 1433,
     "dialect": "mssql",
     "username": "sa",
-    "password": "YourStrongPassword123"
+    "password": "YourStrongPassword123",
+    "database": "UserDB"
   },
   "logging": {
     "level": "debug"
+  },
+  "app": {
+    "port": 3000
   }
 }
