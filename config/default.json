@@ -1,0 +1,15 @@
+{
+  "app": {
+    "port": 3000
+  },
+  "db": {
+    "host": "localhost",
+    "port": 1433,
+    "dialect": "mssql",
+    "username": "sa",
+    "password": "YourStrongPassword123"
+  },
+  "logging": {
+    "level": "info"
+  }
+}
