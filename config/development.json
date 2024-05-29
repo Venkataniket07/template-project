@@ -5,12 +5,16 @@
     "dialect": "mssql",
     "username": "sa",
     "password": "YourStrongPassword123",
-    "database": "UserDB"
+    "database": "UserDB",
+    "logging": true
   },
   "logging": {
     "level": "debug"
   },
   "app": {
     "port": 3000
+  },
+  "jwt": {
+    "secret": "JWT-Secret, HIGHLY CONFIDEENTIAL"
   }
 }

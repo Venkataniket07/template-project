@@ -1,10 +1,15 @@
 require("dotenv").config();
 const express = require("express");
 const config = require("config");
-const logger = require("./src/utils/logger");
+const logger = require("./src/utils/logger")(module);
 const sequelize = require("./src/utils/sequelize");
+const router = require("./src/routes/index");
+const responseHandler = require("./src/utils/responseHandler");
 
 const app = express();
+
+app.use(express.json());
+app.use(responseHandler);
 
 const connect = async () => {
   try {
@@ -14,22 +19,22 @@ const connect = async () => {
     );
   } catch (error) {
     logger.error("Unable to connect to the database:", error);
-    // process.exit(1); Exit the process with an error code
+    logger.info("Exiting the code.");
+    process.exit(1); // Exit the process with an error code
   }
 };
 
 connect();
 
 app.get("/", (req, res) => {
+  logger.info("testing /GET call.");
   res.send("Hello from new application.");
 });
 
+app.use("/User", router.UserRoute);
+
 const port = process.env.APP_PORT || config.get("app.port");
-app.listen(port, (err) => {
-  if (err) {
-    logger.error("Failed to start the server:", err);
-    process.exit(1);
-  }
+app.listen(port, () => {
   logger.info(`Server running on port ${port}`);
 });
 
