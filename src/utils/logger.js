@@ -1,34 +1,57 @@
 const winston = require("winston");
-const morgan = require("morgan"); // write morgan configuration.
-const config = require("config");
 const path = require("path");
-const { format, transports } = require("winston");
 
-// Custom format to include the module name and handle errors with stack trace
-const loggerFormat = (callingModule) => {
-  const moduleLabel = path.basename(callingModule.filename);
+const { format, transports } = winston;
+const { combine, timestamp, label, printf, splat, simple, colorize } = format;
 
-  return format.combine(
-    format.colorize(),
-    format.label({ label: moduleLabel }),
-    format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    format.errors({ stack: true }),
-    format.printf(({ timestamp, label, level, message, stack }) => {
-      const baseLog = `${timestamp} : [${label}] : ${level} : ${message}`;
-      return stack ? `${baseLog}\nStack trace:\n${stack}` : baseLog;
-    })
-  );
+const LOG_LEVEL = process.env.LOG_LEVEL || "info";
+
+const DEFAULT_LOG_LEVELS = {
+  models: process.env.MODELS_LOG_LEVEL || LOG_LEVEL,
+  routes: process.env.ROUTES_LOG_LEVEL || LOG_LEVEL,
+  utils: process.env.UTILS_LOG_LEVEL || LOG_LEVEL,
+  services: process.env.SERVICES_LOG_LEVEL || LOG_LEVEL,
+  middleware: process.env.MIDDLEWARE_LOG_LEVEL || LOG_LEVEL,
 };
 
-// Function to create a logger instance for a specific module
-const createLogger = (callingModule) => {
-  const logger = winston.createLogger({
-    level: config.get("logging.level"),
-    format: loggerFormat(callingModule),
-    transports: [new transports.Console()],
+const logFormat = printf((info) => {
+  const pid = info.pid || process.pid;
+  return `${info.timestamp} : [${info.label}] : ${pid} : ${info.level} : ${info.message}`;
+});
+
+const getLabel = (callingModule) => {
+  const parts = callingModule.filename.split(path.sep);
+  return `${parts[parts.length - 2]}/${parts.pop()}`;
+};
+
+const getLogLevel = (callingModule) => {
+  const parts = callingModule.filename.split(path.sep);
+  const componentName = parts[parts.length - 2].toLowerCase();
+  return DEFAULT_LOG_LEVELS[componentName] || LOG_LEVEL;
+};
+
+const logger = (callingModule) => {
+  const moduleLabel = getLabel(callingModule);
+  const moduleLogLevel = getLogLevel(callingModule);
+
+  const consoleTransport = new transports.Console({
+    format: combine(
+      colorize(),
+      splat(),
+      simple(),
+      label({ label: moduleLabel }),
+      timestamp(),
+      logFormat,
+    ),
+    level: moduleLogLevel,
   });
 
-  return logger;
+  const loggerTransports = [consoleTransport];
+
+  return winston.createLogger({
+    level: moduleLogLevel,
+    transports: loggerTransports,
+  });
 };
 
-module.exports = createLogger;
+module.exports = logger;

@@ -1,0 +1,47 @@
+{
+  "extends": [
+    "eslint:recommended", // Use recommended ESLint rules.
+    "airbnb-base", // Use Airbnb's base JavaScript style guide.
+    "plugin:jest/recommended" // Use recommended Jest linting rules.
+  ],
+  "env": {
+    "node": true, // Enables Node.js global variables and Node.js scoping.
+    "browser": false, // Disables browser global variables.
+    "es2021": true, // Enables ECMAScript 2021 globals and syntax.
+    "jest": true // Adds Jest global variables for testing.
+  },
+  "plugins": [
+    "jest", // Adds support for Jest-specific linting rules.
+    "unused-imports" // Adds support for unused import detection.
+  ],
+  "rules": {
+    "no-console": "off", // Allow console.log statements.
+    "no-undef": "error", // Disallow the use of undeclared variables.
+    "consistent-return": "error", // Require return statements to either always or never specify values.
+    "curly": ["error", "all"], // Enforce consistent brace style for all control statements.
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], // Disallow unused variables, except for those starting with _.
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all", // Apply to all destructuring assignments.
+        "ignoreReadBeforeAssign": true // Ignore variables that are read before being assigned.
+      }
+    ], // Suggest using const if a variable is never reassigned.
+    "no-var": "error", // Require let or const instead of var.
+    "semi": ["error", "always"], // Require semicolons at the end of statements.
+    "quotes": ["error", "double"], // Enforce the consistent use of double quotes.
+    "indent": ["error", 2], // Enforce consistent indentation of 2 spaces.
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }], // Disallow multiple empty lines, with a maximum of 1 empty line and no empty lines at the end of files.
+    "eol-last": ["error", "always"], // Enforce at least one newline at the end of files.
+    "no-trailing-spaces": "error", // Disallow trailing whitespace at the end of lines.
+    "object-curly-spacing": ["error", "always"], // Enforce consistent spacing inside braces.
+    "arrow-spacing": ["error", { "before": true, "after": true }], // Enforce consistent spacing before and after the arrow in arrow functions.
+    "unused-imports/no-unused-imports": "error", // Disallow unused imports.
+    "linebreak-style": ["error", "windows"], // Enforce Windows-style linebreaks.
+    "no-param-reassign": "warn", // Warn when reassigning function parameters.
+    "comma-dangle": ["warn", "always-multiline"], // Warn about trailing commas in multiline object and array literals.
+    "no-return-await": "warn", // Warn when return awaits.
+    "object-curly-newline": "off", // disables new line after opening curly braces.
+    "eqeqeq":"off" // disables '===' requirement.
+  }
+}

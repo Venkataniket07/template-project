@@ -1,16 +1,8 @@
 {
-  "app": {
-    "port": 3000
-  },
-  "db": {
-    "host": "localhost",
-    "port": 1433,
-    "dialect": "mssql",
-    "username": "sa",
-    "password": "YourStrongPassword123",
-    "logging": true
-  },
-  "logging": {
-    "level": "info"
-  }
+    "sequelize_config": {
+        "max": 5,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+    }
 }

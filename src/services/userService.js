@@ -1,4 +1,4 @@
-const { create, update, get, del } = require("../mssql-models/users");
+const { create, update, get, del } = require("../models/users");
 const logger = require("../utils/logger")(module);
 const httpCode = require("../utils/httpCodes.json");
 

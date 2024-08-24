@@ -6,8 +6,6 @@ const {
   updateUser,
   deleteUser,
 } = require("../services/userService");
-const logger = require("../utils/logger")(module);
-const httpCode = require("../utils/httpCodes.json");
 
 const router = express.Router();
 
